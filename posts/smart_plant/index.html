@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      
+  Smart Plant (compared to some) &ndash; Andrew Thorp&#39;s blog
+
+    </title>
+    
+    
+    <meta name="description" property="og:description" content="I had a recent urge to get back to my roots (no pun intended). This means different things to everyone, but for me it meant getting my hands dirty and creating something physical. I believe getting your hands literally dirty has some sort of thereputic affect on the mind, but I&amp;rsquo;m neither qualified nor elequent enough to speak to that. I am however qualified to say getting dirt on your hands and being able to touch something you&amp;rsquo;ve created feels good.|Projects and musings by me, Andrew Thorp.">
+    
+
+    <meta name="apple-mobile-web-app-title" content="Andrew Thorp&#39;s blog">
+    
+    
+    <link rel="icon" href="http://thorp.dev/favicon-64.png">
+    <link rel="apple-touch-icon" href="http://thorp.dev/apple-touch-icon.png">
+    <link rel="mask-icon" size="any" href="http://thorp.dev/pinned-icon.svg">
+    
+    
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@ThorpTheTech">
+    <meta name="twitter:creator" content="@ThorpTheTech">
+    <meta name="twitter:title" content="Smart Plant (compared to some) | Andrew Thorp&#39;s blog">
+    <meta name="twitter:description" content="I had a recent urge to get back to my roots (no pun intended). This means different things to everyone, but for me it meant getting my hands dirty and creating something physical. I believe getting your hands literally dirty has some sort of thereputic affect on the mind, but I&rsquo;m neither qualified nor elequent enough to speak to that. I am however qualified to say getting dirt on your hands and being able to touch something you&rsquo;ve created feels good.|Projects and musings by me, Andrew Thorp.">
+    <meta name="twitter:image" content="http://thorp.dev/twitter-card.png">
+    
+
+
+    <link rel="stylesheet" href="/assets/syntax.css">
+    <link rel="stylesheet" href="/assets/primer-build.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/custom_style.css">
+  </head>
+
+
+  <body class="bg-gray">
+    <div id="holy" class="container-lg bg-white h-100">
+
+      <div id="header" class="px-1 bg-white">
+        <nav class="UnderlineNav UnderlineNav--right px-2">
+  <a class="UnderlineNav-actions link h2" style="color: black" href="http://thorp.dev/">
+    <h2>
+    Andrew Thorp&#39;s blog
+    </h2>
+  </a>
+
+  
+  
+</nav>
+
+      </div>
+
+      <div role="main" id="main" class="holy-main markdown-body px-4 bg-white">
+        
+
+<div class="Subhead">
+  <div class="Subhead-heading">
+    <div class="h1 mt-3 mb-1">Smart Plant (compared to some)</div>
+  </div>
+  <div class="Subhead-description">
+    
+
+
+
+
+<a href='/tags/projects' class="muted-link">
+  <span class="Label Label--gray">projects</span>
+</a>
+
+<a href='/tags/hardware' class="muted-link">
+  <span class="Label Label--gray">hardware</span>
+</a>
+
+<a href='/tags/c' class="muted-link">
+  <span class="Label Label--gray">c</span>
+</a>
+
+<a href='/tags/plants' class="muted-link">
+  <span class="Label Label--gray">plants</span>
+</a>
+
+
+
+    
+    <div class="float-md-right">
+      <span title="Lastmod: 2021-03-09. Published at: 2021-03-07.">
+        
+          Lastmod: 2021-03-09
+        
+      </span>
+    </div>
+    
+  </div>
+</div>
+<article>
+  
+  <section class="pb-6 mb-3 border-bottom">
+    <p>I had a recent urge to get back to my roots (no pun intended).
+This means different things to everyone, but for me it meant getting my hands dirty and creating something physical.
+I believe getting your hands literally dirty has some sort of thereputic affect on the mind, but I&rsquo;m neither qualified nor elequent enough to speak to that.
+I am however qualified to say getting dirt on your hands and being able to touch something you&rsquo;ve created feels good.
+Coincidentially, my fiancé&rsquo;s parents recently gifted me a grow-your-own herbs kit.
+Growing plants combines the one and a half of the components of my itch: I get to play with dirt, check; something physical results, check; I don&rsquo;t really have an <em>active role</em> in the physical creation though.
+That is to say, I might water the plants periodically, but I don&rsquo;t <em>make the plant grow</em>.
+It does that on its own.
+I mearly provide it the correct conditions to do so.
+Another issue is one I&rsquo;ve already secretly touched on: &ldquo;I <em>might</em> water the plants periodically&rdquo;, but I might forget as I have many times before.
+To a young plant, a day or two without water could mean death.
+I&rsquo;ll need to find a way to play a more active role in the plant rearing as well as be more consistant with watering if this planting these herbs is going to scratch that itch.
+This is best done in a fashion that I can show off on social media.
+The obvious solution is for me to do enough toil that a Twitter bot &ldquo;@s&rdquo; me when I need to tend to my seedlings, right?</p>
+<h2 id="project-overview">Project Overview</h2>
+<p>In short, the idea of this project is to have a microcontroller read sensor data from the seedlings, specifically soil moisture levels and temperature, grok that sensor reading and determine if it is hazardous, in which case it will hit the Twitter REST API letting me know.
+This is not a particularly original project; you can find many examples of how to do similar things online.
+However I wanted to try and maximize the toil (I&rsquo;m told more toil == more reward) so I&rsquo;m starting from scratch.</p>
+<h2 id="circuit-setup">Circuit Setup</h2>
+<p>I chose to use the ESP8266 microcontroller on the WeMos D1 Mini (or a knock off) because the controller is compact, the chip has WiFi onboard, and I happen to have a half dozen of these things laying around in a box.
+Additionally, I had purchased a number of <em>resistive</em> soil moisture sensors a few years ago for a similar project.
+I bought them in college and they were $0.50 less than capacitive moisture sensors, however using capacitive sensors would be an easy way to make a small upgrade, for reasons that we&rsquo;ll discuss later.
+For temperature and humidity I happened to have a DHT11 sensor from some <em>Everything You&rsquo;ll Ever Need Arduino Pack 2!</em>, which I purchased for a course in college.</p>
+<p><img src="https://git.sr.ht/~athorp96/smart_plant/blob/main/images/circuit_diagram.png" alt="Circuit diagram"></p>
+<h2 id="software-setup">Software Setup</h2>
+<p>For the software side of things, I&rsquo;m starting this project with the Arduino framework, as it&rsquo;s easy to use and I&rsquo;m a bit rusty when it comes to embedded work.
+However instead of the Arduino IDE I chose to use [PlatformIO][pio] to load and compile code.
+This was for several reasons: firstly, I find the Arduino IDE&rsquo;s editor to be no better than Notepad; secondly, PlatformIO configures projects in a simple <code>.ini</code> file which makes it easy to track in source control; lastly, I don&rsquo;t know that I will stick with the Arduino framework in the future and PlatformIO offers several frameworks for the D1 Mini.</p>
+<p>One issue that befuddled me for more time than I&rsquo;ll admit was I could not compile my code when I started importing libraries.
+The issue seemed to be syntax errors in the Arduino library, however when I importing the same library in an Arduino sketch (why do they call them that?) gave no problem.
+After locking the library down and verifying that version was passing its checks I took to the forums.
+Several forums and a Reddit post later, I noticed one of the (over one hundred) lines of compile errors had the phrase <code>unknown token: &quot;class&quot;</code>.</p>
+<p>Oh.</p>
+<p>Folks, the Arduino library is C++; you&rsquo;ll need to name your source code <code>___.C</code> or <code>____.cpp</code> or set your compile flags to force the <code>g++</code> compiler.</p>
+<h2 id="learning-the-sensors">Learning the Sensors</h2>
+<p>With the software setup in order, we&rsquo;ll need to figure out how we&rsquo;re doing what we need to in code.
+Starting with the DHT11 (temperature sensor) I begain learning what to expect from sensor readings.
+We&rsquo;ll need a serial interface so we can print the data we&rsquo;re reading.</p>
+<pre><code>void setup {
+    Serial.begin(115200);
+    Serial.println(&quot;Starting up...&quot;);
+}
+</code></pre><p>The DHT11 has a nice Arduino library by Adafruit which makes it very easy to read temperature and moisture levels.
+Reading the temperature in Fahrenheit was as simple as declaring a global DHT object, then calling <code>dht.readTemperature()</code> with <code>use_fahrenheit</code> set to <code>true</code>:</p>
+<pre><code>#define DHTPIN D6
+#define DHTTYPE DHT11
+
+void setup() {
+    ...
+    dht.begin();
+    ...
+}
+
+float get_temp_fahrenheit() {
+    bool use_fahrenheit = true;
+    bool force = false;
+    return dht.readTemperature(use_fahrenheit, force);
+}
+</code></pre><p>This returns a friendly reading.
+i.e. If it is 70.5°F <code>dht.readTemperature</code> will return <code>70.5</code>.
+There is one catch to the DHT11 that&rsquo;s in some fine print somewhere: the sensor takes a bit of time to present a reading.
+If you try and poll it too frequently, e.g. every 200ms, it will not return meaningful data.
+This could be handled by a blocking lock in <code>get_temp_fahrenheit</code>, but for now let&rsquo;s just handle it in <code>loop()</code>
+In our loop function, we&rsquo;ll setup a loop and put in a small delay:</p>
+<pre><code>void loop() {
+    float temp = 0;
+
+    while (true) {
+        delay(2500);
+
+        // Handle temperature
+        temp = get_temp_fahrenheit();
+        if (isnan(temp)) {
+            Serial.println(&quot;Error fetching temperature&quot;);
+        } else {
+            Serial.print(&quot;Current temperature: &quot;);
+            Serial.println(temp);
+        }
+    }
+}
+</code></pre><p>Brief aside, I&rsquo;ve seen some people use <code>loop()</code> as the runtime loop itself.
+Maybe that&rsquo;s fine, but it seems like poor practice to me.
+The loop function is run in a loop, but we get some better control when we put a loop inside the function; e.g. data persisting between loops.
+This also allows us to treat returning inside <code>loop</code> as a sort of soft reset, something we can do to reset the program when we don&rsquo;t need to rerun <code>setup()</code>.
+I&rsquo;m not a professional Arduino programmer so maybe what I&rsquo;m doing is poor practice, but I don&rsquo;t think so.
+If I&rsquo;m mistaken feel free to let me know.
+I&rsquo;d love to hear how I could be doing things better.</p>
+<p>Next up we&rsquo;ll need the most important of the system; soil moisture readings.
+You could/should use capacitive soil moisture sensors if you can.
+I don&rsquo;t know the meaningful differences except for one: capacitive sensors are shielded from the soil, but resistive sensors are exposed to the soil and corrode when in use.
+This can be minimized, but it does make the system slightly more complex.
+Before we tackle that, lets take some readings (full disclosure, I haven&rsquo;t gotten to that part yet).</p>
+<p>After digging around the internet I learned that I bought cheap datasheet-less moisture sensors, the HT103, however in some code example with a similar sensor I saw they were using an analog read which produced an integer.
+The integers I read from my sensors were numbers between 0 and 1024 indicating resistance.
+So 1024 is absolute resistance, no connection, and 0 is no resistance.
+In a simple impiracle test, I found that a freshly watered plant read roughly 350.
+This gave me a rough operating range, 350 through 1024, 100% saturated to 0%.
+This range could/would/should probably change as I play with it more, but it&rsquo;s good enough for now.</p>
+<p>Let&rsquo;s setup the sensor and write a function to read the moisture as a percentage.</p>
+<pre><code>// Converts analog moisture reading into a percentage.
+// 1024 -&gt; 0%
+// 350 -&gt; 100%
+float moisture_to_percentage(float reading) {
+    float noSaturation = 1024;
+    float fullySaturated = 350;
+
+    return (noSaturation - reading) / (noSaturation - fullySaturated);
+}
+
+// Read moisture levels and return the value as a percentage
+float get_moisture_percentage() {
+    Serial.println(&quot;Reading moisture sensor&quot;);
+
+    int reading = analogRead(A0);
+
+    return moisture_to_percentage(reading);
+}
+</code></pre><p>Now that we have this lovely reading, we can poll the sensor and print the moisture level!
+Well, not yet.
+I&rsquo;d like to minimize how much this sensor corrodes into my seedling&rsquo;s soil.</p>
+<p>With one moisture sensor this is easy; hook the Vcc of the sensor up to a pin and turn it on only when you read the sensor.
+Piece of cake.
+Some sensors require a warm up time, so you may need to add a small delay after you turn it on, however mine read immediately after being powered.
+Let&rsquo;s amend our previous function to account for this.</p>
+<pre><code>#define HT103_ON_PIN D0
+
+// Run platform initialization code
+void setup() {
+    ...
+    pinMode(HT103_ON_PIN, OUTPUT);
+    ...
+}
+
+// Read moisture levels and return the value as a percentage
+float get_moisture_percentage() {
+    Serial.println(&quot;Reading moisture sensor&quot;);
+
+    digitalWrite(HT103_ON_PIN, 1);
+    int reading = analogRead(A0);
+    digitalWrite(HT103_ON_PIN, 0);
+
+    return moisture_to_percentage(reading);
+}
+</code></pre><p>I am currently waiting on authorization to create a twitter bot, and in the mean time I don&rsquo;t want to need a serial connection to the board to know if I need to water my plants.
+I&rsquo;ll have to settle for another method of reading the data.
+Fortunately, the afformentioned <em>Everything You&rsquo;ll Ever Need Arduino Pack 2!</em> has come in handy a second time with a 2x16 character LCD.
+The LCD required more pins than I would have liked, so it may not be a permenant fixture in the system.
+In addition to the required pins, I also found the backlight to be somewhat annoying to be on all the time.
+Putting a button between the backlight and Vcc was a simple remedy.
+For the code portion, Arduino&rsquo;s Liquid Crystal library lets us get up and running pretty quickly:</p>
+<pre><code>LiquidCrystal lcd(D8, D7, D1, D2, D3, D4);
+
+// Hacky quick way to clear the LCD screen. Much faster than lcd.clear()
+void clear_lcd() {
+    lcd.setCursor(0,0);
+    // I realize this is dumb and poor practice
+    lcd.print(&quot;                &quot;);
+    lcd.setCursor(0,1);
+    lcd.print(&quot;                &quot;);
+    lcd.setCursor(0,0);
+}
+
+// Run platform initialization code
+void setup() {
+    ...
+    // 2 x 16 display mode
+    lcd.begin(16,2);
+    lcd.print(&quot;Starting up...&quot;);
+
+    clear_lcd();
+}
+</code></pre><h2 id="putting-it-together">Putting it together</h2>
+<p>Now that we have all out IO devices setup, let&rsquo;s write a main loop that reads both sensors and prints the output to our LCD:</p>
+<pre><code>void loop() {
+    float temp = 0;
+    float moisture = 0;
+
+    while (true) {
+        delay(2500);
+        clear_lcd();
+
+        // Handle temperature
+        lcd.setCursor(0,0);
+        temp = get_temp_fahrenheit();
+        if (isnan(temp)) {
+            Serial.println(&quot;Error fetching temperature&quot;);
+            lcd.print(&quot;Temp: err&quot;);
+        } else {
+            Serial.print(&quot;Current temperature: &quot;);
+            Serial.println(temp);
+
+            lcd.print(&quot;Temp: &quot;);
+            lcd.print(int(temp));
+            lcd.print('F');
+        }
+
+        // Handle moisture levels
+        lcd.setCursor(0,1);
+        moisture = get_moisture_percentage();
+        if (isnan(moisture)) {
+            Serial.println(&quot;Error getting moisture level&quot;);
+            lcd.print(&quot;Moisture: err&quot;);
+        } else {
+            Serial.print(&quot;Current moisture percentage: &quot;);
+            Serial.println(moisture);
+
+            lcd.print(&quot;Moisture: &quot;);
+            lcd.print(int(moisture * 100));
+            lcd.print(&quot;%&quot;);
+        }
+
+    }
+}
+</code></pre><p>My breadboard is a bit messy, but my end setup looked something like this (spoilers, it <em>is</em> this).</p>
+<p><img src="https://git.sr.ht/~athorp96/smart_plant/blob/main/images/breadboarded.JPG" alt="Working system"></p>
+<p>This is just the start of this project though, and I&rsquo;m excited to add to the system.
+I have dreams of grafana metric dashboards, MQTT communication between devices, live notifications, even more sensors, even possible a self watering system.
+There is a lot to do before this is more than just a slightly scientific way for me to know to water my plants, but it&rsquo;s also kind of a smart plant.
+There are smarter ones out there, but this one is mine.</p>
+<p>You can find the code and more useful stuff at the <a href="https://git.sr.ht/~athorp96/smart_plant">project repository</a> on <a href="git.sr.ht">sourcehut</a>.</p>
+
+  </section>
+
+  <section>
+    
+      
+    
+  </section>
+</article>
+
+      </div>
+
+      <div id="side" class="pr-1 bg-white">
+        <aside class="pr-3">
+          
+  
+    <div id="toc" class="Box Box--blue mb-3">
+      <b>Smart Plant (compared to some)</b><nav id="TableOfContents">
+  <ul>
+    <li><a href="#project-overview">Project Overview</a></li>
+    <li><a href="#circuit-setup">Circuit Setup</a></li>
+    <li><a href="#software-setup">Software Setup</a></li>
+    <li><a href="#learning-the-sensors">Learning the Sensors</a></li>
+    <li><a href="#putting-it-together">Putting it together</a></li>
+  </ul>
+</nav></div>
+  
+
+  
+    
+    
+      <div>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        
+
+        
+
+        
+
+        
+
+      </div>
+    
+  
+
+        </aside>
+      </div>
+
+      <div id="footer" class="pt-2 pb-3 bg-white text-center">
+        <div></div>
+
+
+  <span class="text-small text-gray">
+    ©Andrew Thorp 2021 &middot; 
+
+    Powered by
+    <a href="https://gohugo.io" class="link-gray-dark">Hugo</a>.
+  </span>
+
+
+      </div>
+    </div>
+
+    
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script>
+    
+  </body>
+</html>
