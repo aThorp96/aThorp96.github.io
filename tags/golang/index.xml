@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on Andrew Thorp&#39;s blog</title>
+    <link>http://thorp.dev/tags/golang/</link>
+    <description>Recent content in Golang on Andrew Thorp&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy;Andrew Thorp 2021</copyright>
+    <lastBuildDate>Tue, 27 Aug 2019 15:22:55 +0000</lastBuildDate><atom:link href="http://thorp.dev/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gentior: A Genetic Traveling Salesman Solution</title>
+      <link>http://thorp.dev/posts/gentior/</link>
+      <pubDate>Tue, 27 Aug 2019 15:22:55 +0000</pubDate>
+      
+      <guid>http://thorp.dev/posts/gentior/</guid>
+      <description>The Traveling Salesman Problem (TSP) is one of the most famous NP-Complete problems. If somehow you have not heard of it, the general idea is this: Given a number of points on some coordinate system, is there a Hamiltonian cycle of length n? Though it has evolved now to asking for the smallest n, rather than a given n.
+The Gentior algorithm is specified in a 1990 paper by D&amp;rsquo;Ann Fuquay and Darrell Whitley, Genetic Algorithm Solutions for the Traveling Salesman Problem.</description>
+    </item>
+    
+  </channel>
+</rss>

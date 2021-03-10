@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      
+  Gentior: A Genetic Traveling Salesman Solution &ndash; Andrew Thorp&#39;s blog
+
+    </title>
+    
+    
+    <meta name="description" property="og:description" content="The Traveling Salesman Problem (TSP) is one of the most famous NP-Complete problems. If somehow you have not heard of it, the general idea is this: Given a number of points on some coordinate system, is there a Hamiltonian cycle of length n? Though it has evolved now to asking for the smallest n, rather than a given n.
+The Gentior algorithm is specified in a 1990 paper by D&amp;rsquo;Ann Fuquay and Darrell Whitley, Genetic Algorithm Solutions for the Traveling Salesman Problem.|Projects and musings by me, Andrew Thorp.">
+    
+
+    <meta name="apple-mobile-web-app-title" content="Andrew Thorp&#39;s blog">
+    
+    
+    <link rel="icon" href="http://thorp.dev/favicon-64.png">
+    <link rel="apple-touch-icon" href="http://thorp.dev/apple-touch-icon.png">
+    <link rel="mask-icon" size="any" href="http://thorp.dev/pinned-icon.svg">
+    
+    
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@ThorpTheTech">
+    <meta name="twitter:creator" content="@ThorpTheTech">
+    <meta name="twitter:title" content="Gentior: A Genetic Traveling Salesman Solution | Andrew Thorp&#39;s blog">
+    <meta name="twitter:description" content="The Traveling Salesman Problem (TSP) is one of the most famous NP-Complete problems. If somehow you have not heard of it, the general idea is this: Given a number of points on some coordinate system, is there a Hamiltonian cycle of length n? Though it has evolved now to asking for the smallest n, rather than a given n.
+The Gentior algorithm is specified in a 1990 paper by D&rsquo;Ann Fuquay and Darrell Whitley, Genetic Algorithm Solutions for the Traveling Salesman Problem.|Projects and musings by me, Andrew Thorp.">
+    <meta name="twitter:image" content="http://thorp.dev/twitter-card.png">
+    
+
+
+    <link rel="stylesheet" href="/assets/syntax.css">
+    <link rel="stylesheet" href="/assets/primer-build.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/custom_style.css">
+  </head>
+
+
+  <body class="bg-gray">
+    <div id="holy" class="container-lg bg-white h-100">
+
+      <div id="header" class="px-1 bg-white">
+        <nav class="UnderlineNav UnderlineNav--right px-2">
+  <a class="UnderlineNav-actions link h2" style="color: black" href="http://thorp.dev/">
+    <h2>
+    Andrew Thorp&#39;s blog
+    </h2>
+  </a>
+
+  
+  
+</nav>
+
+      </div>
+
+      <div role="main" id="main" class="holy-main markdown-body px-4 bg-white">
+        
+
+<div class="Subhead">
+  <div class="Subhead-heading">
+    <div class="h1 mt-3 mb-1">Gentior: A Genetic Traveling Salesman Solution</div>
+  </div>
+  <div class="Subhead-description">
+    
+
+
+
+
+<a href='/tags/traveling-salesman-problem' class="muted-link">
+  <span class="Label Label--gray">Traveling Salesman Problem</span>
+</a>
+
+<a href='/tags/genetic-algorithms' class="muted-link">
+  <span class="Label Label--gray">Genetic Algorithms</span>
+</a>
+
+<a href='/tags/golang' class="muted-link">
+  <span class="Label Label--gray">Golang</span>
+</a>
+
+
+
+    
+    <div class="float-md-right">
+      <span title="Lastmod: 2021-03-08. Published at: 2019-08-27.">
+        
+          Lastmod: 2021-03-08
+        
+      </span>
+    </div>
+    
+  </div>
+</div>
+<article>
+  
+  <section class="pb-6 mb-3 border-bottom">
+    <p><img src="-/images/tsp.png" alt=""></p>
+<p>The Traveling Salesman Problem (TSP) is one of the most famous NP-Complete problems.
+If somehow you have not heard of it, the general idea is this:
+Given a number of points on some coordinate system, is there a Hamiltonian cycle of length n?
+Though it has evolved now to asking for the smallest n, rather than a given n.</p>
+<p>The Gentior algorithm is specified in a 1990 paper by D&rsquo;Ann Fuquay and Darrell Whitley, <a href="https://doi.org/10.1145/98949.99033"><strong>Genetic Algorithm Solutions for the Traveling Salesman Problem</strong></a>.
+The paper covers several modern (for the time) approaches to the TSP, and then proposes a new method of creating children that has pretty promising results.
+I&rsquo;m not familiar with the state of the art genetic algorithm techniques or TSP solutions, so I can&rsquo;t say if this is the gold standard today.
+Instead, this project was done with the aim of learning about the TSP, genetic algorithms, and to play around and explore the results.</p>
+<h3 id="genetic-algorithms">Genetic Algorithms</h3>
+<p>This is my first experience with genetic algorithms and Go has proven to be a pretty good tool for the job so far.
+For those of you who, like me, have had little-to-no experience with genetic algorithms, they work something like this:</p>
+<ol>
+<li>You start by randomly generating a number of solutions to your problem. Store these solutions in a sorted &ldquo;population&rdquo; with a fixed size.</li>
+<li>Using some method, you select who &ldquo;parent&rdquo; solutions.</li>
+<li>With two parents selected, combine them through some method to create a third solution called a &ldquo;child&rdquo;.</li>
+<li>With some probabililty the child can mutate, introducing new search space into the population.</li>
+<li>Add the child back into the population. Since the population is sorted and maintains a fixed size, the worst solution is automatically evicted. Ideally the evicted solution is not the new child.</li>
+<li>Repeat steps 2 - 4 some number of generations.</li>
+<li>Chose the first sample from the population as the final solution. Since the list is sorted this will be a best solution.</li>
+</ol>
+<p>Parameters such as parent selection, parent combining, population size, and number of generations can have a significant on the performance of the algorithm.
+These parameters balance the algorithm&rsquo;s ability to maintain a large search space, and converge in a timely fashion. Too small the population, the search space is small and you converge very quickly. Too large and your search space failt to converge in a sane number of generations. Similarly if your parent selection algorithm is too biased, if the likelyhood of choosing a better parent is too high, your converge on a solution quickly. Fast convergance could miss out on a very good edge that occurs in a poor solution, so it is important to find some balance convergance and runtime.</p>
+<h3 id="gentior-and-the-edge-recombination-operator">Gentior and the Edge Recombination Operator</h3>
+<p>Gentior offers a method for child creation that outperforms previous heuristics and rivals algorithms for solutions to the TSP. The Edge Recombination Operator works as follows:</p>
+<ol>
+<li>
+<p>Having selected two parents, construct an edge list of the vertices. The edge list for a vertex is the vertices that appear adjecent to that vertex in either of the parent tours.</p>
+<p>For example, if p1 = (6, 2, 2, 3, 4, 5) and p2 = (1, 2, 3, 5, 6, 4) then the edge list would look like</p>
+<ol>
+<li>6 2 4</li>
+<li>1 3</li>
+<li>2 4 5</li>
+<li>6 1 3 5</li>
+<li>6 3 4</li>
+<li>1 4 5</li>
+</ol>
+</li>
+<li>
+<p>With the dge list constructed we select one of the parents at random. Chose this parent&rsquo;s first vertex as the child&rsquo;s start vertex.</p>
+</li>
+<li>
+<p>To determine the next vertex, use the edge list. With vertex i, we examine edgelist[i]. The next vertex in our path is some j in edgelist[i], where j has the smallest edge list edgelist[j] of any entry in edgelist[i].</p>
+</li>
+<li>
+<p>The newly chosen vertex becomes the current vertex, and stepts 3 - 4 are repeated N - 1 times.</p>
+</li>
+</ol>
+<h3 id="results">Results</h3>
+<p>Writing this in Golang, I was able to heavily use concurrency in this solution and the result was quite good.
+Running the program on the <a href="http://people.sc.fsu.edu/~jburkardt/datasets/tsp/">48 mainland U.S. capitals</a>, it produced results competitive with the known optimal solution (pictured).</p>
+<p>I ended up running the program against many differnent datasets (some randomly generated) with varring population sizes and generations.
+Those datasets and results can be found in <a href="https://github.com/aThorp96/GENTIOR/tree/master/data/sgb128"><code>/data/</code></a> in the <a href="https://github.com/aThorp96/GENTIOR">project repository</a>.
+I hope to one day explore the results data to gain some insight into population size and generational convergance, but things take time.</p>
+<h3 id="further-research-ideas">Further Research Ideas</h3>
+<ul>
+<li>Genetically select parent selection methods</li>
+<li>Genetically select bais methods</li>
+<li>Congregate data into one place</li>
+<li>Further research into parallelism of the algorithm</li>
+<li>Research into a distributed version of the algorithm</li>
+</ul>
+<p>If you have any thoughts, questions, or suggestions, please feel free to email me at <a href="mailto:andrew.thorp.dev@gmail.com">andrew.thorp.dev@gmail.com</a></p>
+
+  </section>
+
+  <section>
+    
+      
+    
+  </section>
+</article>
+
+      </div>
+
+      <div id="side" class="pr-1 bg-white">
+        <aside class="pr-3">
+          
+  
+    <div id="toc" class="Box Box--blue mb-3">
+      <b>Gentior: A Genetic Traveling Salesman Solution</b><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#genetic-algorithms">Genetic Algorithms</a></li>
+        <li><a href="#gentior-and-the-edge-recombination-operator">Gentior and the Edge Recombination Operator</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#further-research-ideas">Further Research Ideas</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+  
+
+  
+    
+    
+      <div>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        
+
+        
+
+        
+
+        
+
+      </div>
+    
+  
+
+        </aside>
+      </div>
+
+      <div id="footer" class="pt-2 pb-3 bg-white text-center">
+        <div></div>
+
+
+  <span class="text-small text-gray">
+    ©Andrew Thorp 2021 &middot; 
+
+    Powered by
+    <a href="https://gohugo.io" class="link-gray-dark">Hugo</a>.
+  </span>
+
+
+      </div>
+    </div>
+
+    
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script>
+    
+  </body>
+</html>
