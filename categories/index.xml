@@ -5,7 +5,6 @@
     <link>http://thorp.dev/categories/</link>
     <description>Recent content in Categories on Andrew Thorp&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>&amp;copy;Andrew Thorp 2021</copyright><atom:link href="http://thorp.dev/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="http://thorp.dev/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
