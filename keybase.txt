@@ -1,0 +1,83 @@
+ hereby claim:
+
+  * I am an admin of https://thorp.dev
+  * I am awildthorp (https://keybase.io/awildthorp) on keybase.
+  * I have a public key with fingerprint 2150 8E32 FEA4 C95F 172D  D8C6 C147 2ABE D00F F0DB
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01017f932621220d90d10cb306d33f9a39464635ea852b3b4f2c7c0342f06950fbad0a",
+      "fingerprint": "21508e32fea4c95f172dd8c6c1472abed00ff0db",
+      "host": "keybase.io",
+      "key_id": "c1472abed00ff0db",
+      "kid": "01017f932621220d90d10cb306d33f9a39464635ea852b3b4f2c7c0342f06950fbad0a",
+      "uid": "802fd177a453aa91769b84c6fbd64019",
+      "username": "awildthorp"
+    },
+    "merkle_root": {
+      "ctime": 1617241612,
+      "hash_meta": "15049070c6d9ec08399e13881c63bad08e7e23034b2f7b6ad359caa53e031ebf",
+      "seqno": 19520023
+    },
+    "revoke": {
+      "sig_ids": [
+        "654b57a29396e8c3a563b638411628daed0d4a2a527f682df3825ed1942e8b540f"
+      ]
+    },
+    "service": {
+      "hostname": "thorp.dev",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1617241668,
+  "expire_in": 157680000,
+  "prev": "ba4f968fd5ddaba3d0e9fcdc472102cc79208688883be7ee97a49c9b27031c5f",
+  "seqno": 33,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.13
+Comment: https://keybase.io/crypto
+
+yMPUAnicrZN9bBRFGMaPYqVUKOVDIRBQlqhYmjo7szu7exgKDYhawAhSg4Wcszuz
+vaXt7bG7PSj1Llg+YtKaUKhGbEUjEYgorSAkClJa+oE0fBQlDaBChEYoTURLAAE9
+ZxtMjPFP54/d7OR53+d5f7PTOnxwIH1Q89ysQ6dGXD8/qLMlVhZ4jT0xu0LQbVou
+BCuEYjbwYiWUuV6o2KJCUAAiEBVTQxBDEUJANUBFYOgIYIqQqRGkSVjCSGZElaGO
+dMmEhmIAJEETYE0Gpk4oIEK2YFqRIuZEHSvi8bZQlIHKEDQZkQxNNkUFUqoa2BAl
+BRKdUQBME1CdF4Zt16/g4XTishzL5nv8IzQQ7z/0/3PusoF2KoAmFRWFSDIiRBMV
+rOmqZGBTp1gCouYLXeZESCnjarLSKqFe2HaiQjxbKGVOcQkLObbt+XgNz/JFIuYz
+S/wJ+YjEDYdKmUd4LQcjaUABBqYaM4CKNI2JSFVFAyM/k8oUBhEPqkNT0TGhSNYM
+QmTEABKZbvIkLlsRsbmDJkMAIOIRHBazi5nv7lpFnJwrBAsFLEu6rBCoIQ0z1UBE
+5g4YqZIoYqhSwqFSiUAiQ8XEKqQmUqHMqKhJkKm6LAFTWBb33ZyYZQw094/qPoKB
+6XMoi/E8Ucf2bMMu4dthz4u6QZ+KVx71dSuZHrrfIaRbEcr/El4RY45r2RE+A1f+
+CxhWswW2Kmo5LGT5ClnBKuDL9+F2QUEnkqlh1aQypUQniAKmmQY1+J8iAmgYigaB
+ilW+kM5hMo2fqmZoOlQ4QUP+B0GEeE5SxHtybBHilTlMiLc0L30gMCg98GBqin99
+AulDM/++VBcTI5KLuoQhgYJtu2MpB8SqtkCO0nIoL3n2Hh55rD45cVhtce4xIa3+
+nDmqckru7jFTtnwz+Oafbvecqz8vOLiesLmhHjY9dfH1xBVq5wemrs0YN9KNbtp7
+JG3qpF9OXJp4p/xj51L5lM/mrAp3lP5US+IzW6dt3ZLR/OMLBWeKCnLX0rczGsN3
+OgORM1WDu648c6Op41D1vIUpR86P31UxZHVVV194QXfnjrrnqzdnrRu2pur9yqtf
+bepMO5H4pP6RPcODSdzQYHwf668+W/BUX3xHfmTa2E/ZqfOnjo2uGzajpzf8esPc
+2tuXn2y3T9YXjLvdGNpbXlKaVrMHPpZRuHqd2Ns9fuWi/XcPGy+PcbfH7P410uLa
+L4+eo8unV776w+ln383ujXx719nZUbYx8fmM3q7JnSdLSWX/F7OaRj8+g82P49M7
+GwtWHy/M3Hkxd/P63ONX9lwXzySa983KmrTqxpbJD2X37LpVc7JjSd53537zLr9Z
+/05T6gT16YaUR/P199pne12TV4xdDzdWZL04atmBD0ec6NcLf+3Jz0sur6lf2tZ6
+tj1p721MqgtT825aedvrvr7W1jc/nld3dd/vz128FuybefeDrU2PHbyVefylDW9t
+CCy5EFvQcjhxoFrpH3o0p+6jCddqRvf2JnLS7+A/Wpetyy56uG1ixisHI/vTJr3R
+Pf6eOM/MHHmhPRCZX7Vt/42/AI6zBnQ=
+=B/X+
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/awildthorp
+
+==================================================================
