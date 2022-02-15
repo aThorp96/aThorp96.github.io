@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="Thorp.dev" content="width=device-width, initial-scale=1" http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<style>
+body {
+	background-color: #282828;
+	color: #ebdbb2;
+}
+
+.sidenav {
+	height: 100%;
+	width: 160px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.sidenav a {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #83a598;
+	display: block;
+}
+
+.sidenav h2 {
+	padding: 0px 10px 10px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #fe8019;
+	display: block;
+	text-align: center;
+}
+
+.sidenav img {
+	width: 140px;
+	margin-left: 20px;
+}
+
+.sidenav a:hover {
+	color: #8ec07c;
+}
+
+.main {
+	margin-left: 160px; /* Same as the width of the sidenav */
+	max-width: 600px;
+	margin-right: 25%; /* Same as the width of the sidenav */
+	font-size: 16px; /* Increased text to enable scrolling */
+	padding: 0px 10px;
+}
+
+.main h2 {
+	color: #b8bb26;
+}
+
+.main a {
+	text-decoration: none;
+	color: #83a598;
+	display: block;
+}
+
+.main a:hover {
+	color: #8ec07c;
+}
+
+@media screen and (max-height: 450px) {
+	.main {
+		margin-left: 70px; /* Same as the width of the sidenav */
+		margin-right: 0%; /* Same as the width of the sidenav */
+		font-size: 16px; /* Increased text to enable scrolling */
+		padding: 0px 10px;
+	}
+	.sidenav {
+		padding-top: 15px;
+		width: 70px;
+	}
+	.sidenav a {font-size: 12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidenav">
+	<img src="/assets/hiking-headshot-dithered.png" >
+    <a href="/">
+	<h2>Andrew Thorp</h2>
+    </a>
+	<a href="/about.html">{About}</a>
+	<a href="/now.html">{Currently}</a>
+	<a href="/links.html">{Links}</a>
+	<a href="/posts.html">{Posts}</a>
+</div>
+
+<div class="main">
+<h1>Golang Naming Conventions</h1>
+
+<br>I've been working with Golang off and on since college. When I first
+<br>encountered the language I knew Java and C, and I was thrilled to be working
+<br>with a language that felt modern yet familiar. The language's opinions were
+<br>sensible but things like type-inference, simple concurrency, and duck-typing
+<br>were refreshing. I no longer feel this way
+<br>
+<br>Now, I feel like every time I encounter an opinionated decision in Golang's
+<br>design or prescriptive style I disagree with it. Not just "I don't like this"
+<br>so much as "I don't understand how this could be a positive choice". The
+<br>perfect example of this is actually a part of the Go Official Style™ [1]:
+<br>
+<br>Initialisms are, by standard, consistently cased. So if you have a VOIP ID or
+<br>Target Group ARN they want you to write it VOIPID and TargetGroupARN instead of
+<br>VoipID TargetGroupArn. This degrades the readability of the variables and the
+<br>ability to break the var into words. When you camel case initialisms you are
+<br>able to intuitively break up VoipId into VOIP and ID. This is more difficult
+<br>with VOIPID or voipid. God forbid you need to do so programmatically.
+<br>Without a dictionary of initialisms most programs would break the first example
+<br>into the words "V", "O", "I", "P", "I", and "D". Us humans have a dictionary
+<br>of initialisms in our brain, so all we need to do is try and figure out where
+<br>to place the delimeter.
+<br>
+<br>Of course Golang has a solution for this: mix and match! Use lowercase for one
+<br>word and UPPERCASE for the next. Easy! voipID and VOIPid (in the case of a
+<br>public field) are easy and only come at the cost of inconsistent casing.
+<br>Of course this breaks down if you have three in a row.
+<br>
+<br>> VoipXmlId
+<br>> VOIPXMLID
+<br>> VOIPxmlID
+<br>> voipXMLid
+<br>
+<br>Someone please tell me what could possibly be a defense for this. I can't
+<br>fathom what we gain from this casing convention.
+<br>
+<br><a href="https://github.com/golang/go/wiki/CodeReviewComments#initialisms">{[1] Golang official initialisms convention}</a>
+</div>
+
+</body>
+</html>

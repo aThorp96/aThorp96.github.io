@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="Thorp.dev" content="width=device-width, initial-scale=1" http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<style>
+body {
+	background-color: #282828;
+	color: #ebdbb2;
+}
+
+.sidenav {
+	height: 100%;
+	width: 160px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.sidenav a {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #83a598;
+	display: block;
+}
+
+.sidenav h2 {
+	padding: 0px 10px 10px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #fe8019;
+	display: block;
+	text-align: center;
+}
+
+.sidenav img {
+	width: 140px;
+	margin-left: 20px;
+}
+
+.sidenav a:hover {
+	color: #8ec07c;
+}
+
+.main {
+	margin-left: 160px; /* Same as the width of the sidenav */
+	max-width: 600px;
+	margin-right: 25%; /* Same as the width of the sidenav */
+	font-size: 16px; /* Increased text to enable scrolling */
+	padding: 0px 10px;
+}
+
+.main h2 {
+	color: #b8bb26;
+}
+
+.main a {
+	text-decoration: none;
+	color: #83a598;
+	display: block;
+}
+
+.main a:hover {
+	color: #8ec07c;
+}
+
+@media screen and (max-height: 450px) {
+	.main {
+		margin-left: 70px; /* Same as the width of the sidenav */
+		margin-right: 0%; /* Same as the width of the sidenav */
+		font-size: 16px; /* Increased text to enable scrolling */
+		padding: 0px 10px;
+	}
+	.sidenav {
+		padding-top: 15px;
+		width: 70px;
+	}
+	.sidenav a {font-size: 12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidenav">
+	<img src="/assets/hiking-headshot-dithered.png" >
+    <a href="/">
+	<h2>Andrew Thorp</h2>
+    </a>
+	<a href="/about.html">{About}</a>
+	<a href="/now.html">{Currently}</a>
+	<a href="/links.html">{Links}</a>
+	<a href="/posts.html">{Posts}</a>
+</div>
+
+<div class="main">
+<h1>Smart Plant (compared to some)</h1>
+
+<br>I had a recent urge to get back to my roots (no pun intended). This means different things to everyone, but for me it meant getting my hands dirty and creating something physical. I believe getting your hands literally dirty has some sort of theraputic affect on the mind, but I’m neither qualified nor elequent enough to speak to that. I am however qualified to say getting dirt on your hands and being able to touch something you’ve created feels good. Coincidentially, my fiancé's parents recently gifted me a grow-your-own herbs kit. Growing plants combines the one and a half of the components of my itch: I get to play with dirt, check; something physical results, check; I don’t really have an active role in the physical creation though. That is to say, I might water the plants periodically, but I don’t make the plant grow. It does that on its own. I mearly provide it the correct conditions to do so. Another issue is one I’ve already secretly touched on: “I might water the plants periodically”, but I might forget as I have many times before. To a young plant, a day or two without water could mean death. I’ll need to find a way to play a more active role in the plant rearing as well as be more consistant with watering if this planting these herbs is going to scratch that itch. This is best done in a fashion that I can show off on social media. The obvious solution is for me to do enough toil that a Twitter bot “@s” me when I need to tend to my seedlings, right?
+<br>
+<h2>Project Overview</h2>
+In short, the idea of this project is to have a microcontroller read sensor data from the seedlings, specifically soil moisture levels and temperature, grok that sensor reading and determine if it is hazardous, in which case it will hit the Twitter REST API letting me know. This is not a particularly original project; you can find many examples of how to do similar things online. However I wanted to try and maximize the toil (I’m told more toil == more reward) so I’m starting from scratch.
+<br>
+<h2>Circuit Setup</h2>
+I chose to use the ESP8266 microcontroller on the WeMos D1 Mini (or a knock off) because the controller is compact, the chip has WiFi onboard, and I happen to have a half dozen of these things laying around in a box. Additionally, I had purchased a number of resistive soil moisture sensors a few years ago for a similar project. I bought them in college and they were $0.50 less than capacitive moisture sensors, however using capacitive sensors would be an easy way to make a small upgrade, for reasons that we’ll discuss later. For temperature and humidity I happened to have a DHT11 sensor from some Everything You’ll Ever Need Arduino Pack 2!, which I purchased for a course in college.
+<br><a href="https://git.sr.ht/~athorp96/smart_plant/blob/main/images/circuit_diagram.png">{Circuit diagram}</a>
+<br>
+<br><a href="https://git.sr.ht/~athorp96/smart_plant">{Project Repository}</a>
+<br>
+<h2>Software Setup</h2>
+For the software side of things, I’m starting this project with the Arduino framework, as it’s easy to use and I’m a bit rusty when it comes to embedded work. However instead of the Arduino IDE I chose to use [PlatformIO][pio] to load and compile code. This was for several reasons: firstly, I find the Arduino IDE’s editor to be no better than Notepad; secondly, PlatformIO configures projects in a simple .ini file which makes it easy to track in source control; lastly, I don’t know that I will stick with the Arduino framework in the future and PlatformIO offers several frameworks for the D1 Mini.
+<br>
+<br>One issue that befuddled me for more time than I’ll admit was I could not compile my code when I started importing libraries. The issue seemed to be syntax errors in the Arduino library, however when I importing the same library in an Arduino sketch (why do they call them that?) gave no problem. After locking the library down and verifying that version was passing its checks I took to the forums. Several forums and a Reddit post later, I noticed one of the (over one hundred) lines of compile errors had the phrase unknown token: "class".
+<br>
+<br>Oh.
+<br>
+<br>Folks, the Arduino library is C++; you’ll need to name your source code ___.C or ____.cpp or set your compile flags to force the g++ compiler.
+<br>
+<h2>Learning the Sensors</h2>
+With the software setup in order, we’ll need to figure out how we’re doing what we need to in code. Starting with the DHT11 (temperature sensor) I begain learning what to expect from sensor readings. We’ll need a serial interface so we can print the data we’re reading.
+<pre>
+void setup {
+    Serial.begin(115200);
+    Serial.println("Starting up...");
+}
+</pre>
+<br>The DHT11 has a nice Arduino library by Adafruit which makes it very easy to read temperature and moisture levels. Reading the temperature in Fahrenheit was as simple as declaring a global DHT object, then calling dht.readTemperature() with use_fahrenheit set to true:
+<pre>
+#define DHTPIN D6
+#define DHTTYPE DHT11
+
+void setup() {
+    ...
+    dht.begin();
+    ...
+}
+
+float get_temp_fahrenheit() {
+    bool use_fahrenheit = true;
+    bool force = false;
+    return dht.readTemperature(use_fahrenheit, force);
+}
+</pre>
+<br>This returns a friendly reading. i.e. If it is 70.5°F dht.readTemperature will return 70.5. There is one catch to the DHT11 that’s in some fine print somewhere: the sensor takes a bit of time to present a reading. If you try and poll it too frequently, e.g. every 200ms, it will not return meaningful data. This could be handled by a blocking lock in get_temp_fahrenheit, but for now let’s just handle it in loop() In our loop function, we’ll setup a loop and put in a small delay:
+<pre>
+void loop() {
+    float temp = 0;
+
+    while (true) {
+        delay(2500);
+
+        // Handle temperature
+        temp = get_temp_fahrenheit();
+        if (isnan(temp)) {
+            Serial.println("Error fetching temperature");
+        } else {
+            Serial.print("Current temperature: ");
+            Serial.println(temp);
+        }
+    }
+}
+</pre>
+<br>Brief aside, I’ve seen some people use loop() as the runtime loop itself. Maybe that’s fine, but it seems like poor practice to me. The loop function is run in a loop, but we get some better control when we put a loop inside the function; e.g. data persisting between loops. This also allows us to treat returning inside loop as a sort of soft reset, something we can do to reset the program when we don’t need to rerun setup(). I’m not a professional Arduino programmer so maybe what I’m doing is poor practice, but I don’t think so. If I’m mistaken feel free to let me know. I’d love to hear how I could be doing things better.
+<br>
+<br>Next up we’ll need the most important of the system; soil moisture readings. You could/should use capacitive soil moisture sensors if you can. I don’t know the meaningful differences except for one: capacitive sensors are shielded from the soil, but resistive sensors are exposed to the soil and corrode when in use. This can be minimized, but it does make the system slightly more complex. Before we tackle that, lets take some readings (full disclosure, I haven’t gotten to that part yet).
+<br>
+<br>After digging around the internet I learned that I bought cheap datasheet-less moisture sensors, the HT103, however in some code example with a similar sensor I saw they were using an analog read which produced an integer. The integers I read from my sensors were numbers between 0 and 1024 indicating resistance. So 1024 is absolute resistance, no connection, and 0 is no resistance. In a simple impiracle test, I found that a freshly watered plant read roughly 350. This gave me a rough operating range, 350 through 1024, 100% saturated to 0%. This range could/would/should probably change as I play with it more, but it’s good enough for now.
+<br>
+<br>Let’s setup the sensor and write a function to read the moisture as a percentage.
+<pre>
+// Converts analog moisture reading into a percentage.
+// 1024 -> 0%
+// 350 -> 100%
+float moisture_to_percentage(float reading) {
+    float noSaturation = 1024;
+    float fullySaturated = 350;
+
+    return (noSaturation - reading) / (noSaturation - fullySaturated);
+}
+
+// Read moisture levels and return the value as a percentage
+float get_moisture_percentage() {
+    Serial.println("Reading moisture sensor");
+
+    int reading = analogRead(A0);
+
+    return moisture_to_percentage(reading);
+}
+</pre>
+<br>Now that we have this lovely reading, we can poll the sensor and print the moisture level! Well, not yet. I’d like to minimize how much this sensor corrodes into my seedling’s soil.
+<br>
+<br>With one moisture sensor this is easy; hook the Vcc of the sensor up to a pin and turn it on only when you read the sensor. Piece of cake. Some sensors require a warm up time, so you may need to add a small delay after you turn it on, however mine read immediately after being powered. Let’s amend our previous function to account for this.
+<pre>
+#define HT103_ON_PIN D0
+
+// Run platform initialization code
+void setup() {
+    ...
+    pinMode(HT103_ON_PIN, OUTPUT);
+    ...
+}
+
+// Read moisture levels and return the value as a percentage
+float get_moisture_percentage() {
+    Serial.println("Reading moisture sensor");
+
+    digitalWrite(HT103_ON_PIN, 1);
+    int reading = analogRead(A0);
+    digitalWrite(HT103_ON_PIN, 0);
+
+    return moisture_to_percentage(reading);
+}
+</pre>
+<br>I am currently waiting on authorization to create a twitter bot, and in the mean time I don’t want to need a serial connection to the board to know if I need to water my plants. I’ll have to settle for another method of reading the data. Fortunately, the afformentioned Everything You’ll Ever Need Arduino Pack 2! has come in handy a second time with a 2x16 character LCD. The LCD required more pins than I would have liked, so it may not be a permenant fixture in the system. In addition to the required pins, I also found the backlight to be somewhat annoying to be on all the time. Putting a button between the backlight and Vcc was a simple remedy. For the code portion, Arduino’s Liquid Crystal library lets us get up and running pretty quickly:
+<br>
+<pre>
+LiquidCrystal lcd(D8, D7, D1, D2, D3, D4);
+
+// Hacky quick way to clear the LCD screen. Much faster than lcd.clear()
+void clear_lcd() {
+    lcd.setCursor(0,0);
+    // I realize this is dumb and poor practice
+    lcd.print("                ");
+    lcd.setCursor(0,1);
+    lcd.print("                ");
+    lcd.setCursor(0,0);
+}
+
+// Run platform initialization code
+void setup() {
+    ...
+    // 2 x 16 display mode
+    lcd.begin(16,2);
+    lcd.print("Starting up...");
+
+    clear_lcd();
+}
+</pre>
+<br>
+<h2>Putting it all Together</h2>
+Now that we have all out IO devices setup, let’s write a main loop that reads both sensors and prints the output to our LCD:
+<pre>
+void loop() {
+    float temp = 0;
+    float moisture = 0;
+
+    while (true) {
+        delay(2500);
+        clear_lcd();
+
+        // Handle temperature
+        lcd.setCursor(0,0);
+        temp = get_temp_fahrenheit();
+        if (isnan(temp)) {
+            Serial.println("Error fetching temperature");
+            lcd.print("Temp: err");
+        } else {
+            Serial.print("Current temperature: ");
+            Serial.println(temp);
+
+            lcd.print("Temp: ");
+            lcd.print(int(temp));
+            lcd.print('F');
+        }
+
+        // Handle moisture levels
+        lcd.setCursor(0,1);
+        moisture = get_moisture_percentage();
+        if (isnan(moisture)) {
+            Serial.println("Error getting moisture level");
+            lcd.print("Moisture: err");
+        } else {
+            Serial.print("Current moisture percentage: ");
+            Serial.println(moisture);
+
+            lcd.print("Moisture: ");
+            lcd.print(int(moisture * 100));
+            lcd.print("%");
+        }
+
+    }
+}
+</pre>
+<br>My breadboard is a bit messy, but my end setup looked something like this (spoilers, it is this).
+<br><a href="https://git.sr.ht/~athorp96/smart_plant/blob/main/images/breadboarded.JPG">{Picture of breadboard assembled}</a>
+<br>
+<br>This is just the start of this project though, and I’m excited to add to the system. I have dreams of grafana metric dashboards, MQTT communication between devices, live notifications, even more sensors, even possible a self watering system. There is a lot to do before this is more than just a slightly scientific way for me to know to water my plants, but it’s also kind of a smart plant. There are smarter ones out there, but this one is mine.
+<br>
+<br>You can find the code and more useful stuff at the project repository on sourcehut.
+<br>
+<br><a href="https://git.sr.ht/~athorp96/smart_plant">{Project Repository}</a>
+</div>
+
+</body>
+</html>

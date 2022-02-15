@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="Thorp.dev" content="width=device-width, initial-scale=1" http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<style>
+body {
+	background-color: #282828;
+	color: #ebdbb2;
+}
+
+.sidenav {
+	height: 100%;
+	width: 160px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.sidenav a {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #83a598;
+	display: block;
+}
+
+.sidenav h2 {
+	padding: 0px 10px 10px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #fe8019;
+	display: block;
+	text-align: center;
+}
+
+.sidenav img {
+	width: 140px;
+	margin-left: 20px;
+}
+
+.sidenav a:hover {
+	color: #8ec07c;
+}
+
+.main {
+	margin-left: 160px; /* Same as the width of the sidenav */
+	max-width: 600px;
+	margin-right: 25%; /* Same as the width of the sidenav */
+	font-size: 16px; /* Increased text to enable scrolling */
+	padding: 0px 10px;
+}
+
+.main h2 {
+	color: #b8bb26;
+}
+
+.main a {
+	text-decoration: none;
+	color: #83a598;
+	display: block;
+}
+
+.main a:hover {
+	color: #8ec07c;
+}
+
+@media screen and (max-height: 450px) {
+	.main {
+		margin-left: 70px; /* Same as the width of the sidenav */
+		margin-right: 0%; /* Same as the width of the sidenav */
+		font-size: 16px; /* Increased text to enable scrolling */
+		padding: 0px 10px;
+	}
+	.sidenav {
+		padding-top: 15px;
+		width: 70px;
+	}
+	.sidenav a {font-size: 12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidenav">
+	<img src="/assets/hiking-headshot-dithered.png" >
+    <a href="/">
+	<h2>Andrew Thorp</h2>
+    </a>
+	<a href="/about.html">{About}</a>
+	<a href="/now.html">{Currently}</a>
+	<a href="/links.html">{Links}</a>
+	<a href="/posts.html">{Posts}</a>
+</div>
+
+<div class="main">
+<h1>Lagrange, the pretty Gemini browser</h1>
+
+<br>I've used several Gemini browsers, both in the terminal and in a GUI. After using Lagrange, I can't say I plan on continuing my search for a better browser.
+<br>
+<br>When looking at a Gemini browser, I have several criteria which I take into consideration:
+<br>
+<ul>
+<li>Performance - Is the browser a memory hog? Is it written in an interpreted language? Does it feel snappy or does it lag?</li>
+<li>Aesthetics - Browsers should look good. This means a focus on providing a clean and elegant UI.</li>
+<li>Functionality - The browser needs to be easy to use and have user-friendly features. Bonus points for productivity features.</li>
+<ul/>
+<br>
+<h2>Performance</h2>
+
+<br>I don't have a lot to say here. Lagrange is fast and doesn't use much memory. Being written in C is likely at least a contributor to its snappiness. That comes of course at the cost of potential memory leaks, but I've not experienced leaks in my longrunning sessions.
+<br>
+<h2>Aesthetics</h2>
+
+<br>The look and feel of Lagrange are what initially made is stand out to me. It is clean, intuitive, and allows you to change things like the font and colorscheme with ease. Additionally, it allows for inline images and site icons. Ultimately it feels very slick and is a joy to use.
+<br>
+<h2>Functionality</h2>
+
+<br>Lagrange _was_ on par with other browsers I've used. It's pretty than others, but it has the basic features you expect: tabs, bookmarks, configurable homepage. However along with inline images, it also supports configurable site/bookmark icons, a builtin feed subscriber, visual indication of remote vs local links, and also text-based navigation.
+<br>
+<br>Simply put, this is in my humble opinion the finest Gemini browser being offered (it even supports other protocols like `finger`!). I highly recommend it and I think you should too.
+<br>
+<h1>Learn More</h1>
+
+<br>Please consider supporting this software and its development. You can find a paypal link in the Lagrange Github repository.
+<br>
+<br><a href="https://github.com/skyjake/lagrange">{Lagrange github}</a>
+<br><a href="gemini://skyjake.fi/lagrange/">{Lagrange homepage}</a>
+</div>
+
+</body>
+</html>
