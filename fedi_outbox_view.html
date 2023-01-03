@@ -1,0 +1,74 @@
+<html>
+
+<body>
+    File Select
+    <input type="text" id="selectedfile" name="selectedfile">
+    <input type="file" id="inputfile" name="inputfile" onChange='showSelectedFile()' />
+    <br><br>
+    Search
+    <input type="text" id="search" name="search">
+    <table>
+        <thead>
+            <tr>
+                <th>Posts</th>
+            </tr>
+        </thead>
+        <tbody id=output>
+
+        </tbody>
+    </table>
+</body>
+
+</html>
+
+<script>
+    function showSelectedFile() {
+        selectedfile.value = document.getElementById("inputfile").value;
+    }
+
+    var text = "";
+    var search = "";
+
+    function showContent() {
+        let posts = JSON.parse(text)
+            .orderedItems
+            .filter(function (val) { return typeof val.object !== typeof "string" })
+            .map(function (val) { return val.object.content })
+            .filter(function (content) { return content.includes(search) })
+            .reverse();
+        let tableHtml = "";
+        for (i in posts) {
+            tableHtml += `<tr><td>${posts[i]}</td></tr>`;
+        }
+        document.getElementById('output')
+            .innerHTML = tableHtml;
+    }
+
+    document.getElementById('inputfile')
+        .addEventListener('change', function () {
+            var fr = new FileReader();
+            fr.onload = function () {
+
+                text = fr.result
+                showContent();
+            }
+            fr.readAsText(this.files[0]);
+        })
+
+    document.getElementById('search')
+        .addEventListener('change', function () {
+            search = document.getElementById('search').value;
+
+            showContent();
+        })
+</script>
+
+<style>
+    table {
+        width: 100%;
+    }
+
+    tr:nth-child(even) {
+        background-color: #eee;
+    }
+</style>
