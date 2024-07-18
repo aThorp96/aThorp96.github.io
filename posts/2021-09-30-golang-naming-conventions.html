@@ -101,19 +101,22 @@ body {
 <div class="main">
 <h1>Golang Naming Conventions</h1>
 
+<br>[Updated 2024-07-18] - Minor rewording
+<br>
 <br>I've been working with Golang off and on since college. When I first
 <br>encountered the language I knew Java and C, and I was thrilled to be working
 <br>with a language that felt modern yet familiar. The language's opinions were
 <br>sensible but things like type-inference, simple concurrency, and duck-typing
 <br>were refreshing. I no longer feel this way
 <br>
-<br>Now, I feel like every time I encounter an opinionated decision in Golang's
-<br>design or prescriptive style I disagree with it. Not just "I don't like this"
+<br>Nowadays when I encounter an opinionated decision in Golang's design or
+<br>prescriptive style, I disagree with it. Not just "I don't like this"
 <br>so much as "I don't understand how this could be a positive choice". The
-<br>perfect example of this is actually a part of the Go Official Style™ [1]:
+<br>example of this I want to talk about is actually a part of the
+<br>Go Official Style [1]: variable name casing.
 <br>
-<br>Initialisms are, by standard, consistently cased. So if you have a VOIP ID or
-<br>Target Group ARN they want you to write it VOIPID and TargetGroupARN instead of
+<br>Initialisms are, by Go's standard, consistently cased. So if you have a VOIP ID or
+<br>Target Group ARN you may write them as VOIPID and TargetGroupARN instead of
 <br>VoipID TargetGroupArn. This degrades the readability of the variables and the
 <br>ability to break the var into words. When you camel case initialisms you are
 <br>able to intuitively break up VoipId into VOIP and ID. This is more difficult
@@ -126,15 +129,17 @@ body {
 <br>Of course Golang has a solution for this: mix and match! Use lowercase for one
 <br>word and UPPERCASE for the next. Easy! voipID and VOIPid (in the case of a
 <br>public field) are easy and only come at the cost of inconsistent casing.
-<br>Of course this breaks down if you have three in a row.
+<br>Of course this breaks down if you have more than two in a row.
 <br>
 <br>> VoipXmlId
 <br>> VOIPXMLID
 <br>> VOIPxmlID
 <br>> voipXMLid
 <br>
-<br>Someone please tell me what could possibly be a defense for this. I can't
-<br>fathom what we gain from this casing convention.
+<br>Since the casing of the first character in a function name controls function's
+<br>visibility, this adds even more weirdisms. In general Golang's variable casing
+<br>decisions to be ugly, so it's not necessarily a surprise. Still, this
+<br>particular choice seems unusually baffling.
 <br>
 <br><a href="https://github.com/golang/go/wiki/CodeReviewComments#initialisms">{[1] Golang official initialisms convention}</a>
 </div>
